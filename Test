@@ -1,0 +1,175 @@
+using System.Media;
+
+namespace ST10438866_PROG6221_POE_Part1
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Welcome();
+
+            bool running = true;
+            while (running)
+            {
+                Console.WriteLine(new string('-', 40));
+                Console.WriteLine("What is your name?");
+                Console.WriteLine(new string('-', 40) + "\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
+
+                try
+                {
+                    string name = Console.ReadLine();
+
+                    // Check for blank input
+                    if (string.IsNullOrWhiteSpace(name))
+                    {
+                        throw new ArgumentException("I require a name to know how to address you.");
+                    }
+
+                    // Check for special characters or numbers
+                    if (name.Any(char.IsDigit) || name.Any(char.IsPunctuation))
+                    {
+                        throw new ArgumentException("Please do not use special symbols or numbers in your name.");
+                    }
+
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("\n" + new string('-', 60));
+                    Console.WriteLine($"Nice to meet you {name}. You can enter \'exit\' to exit");
+                    Console.WriteLine(new string('-', 60));
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+
+                    for (int i = 0; i < 10000; i++)
+                    {
+                        Console.WriteLine("\n" + new string('-', 40));
+                        Console.WriteLine($"How may I help you today {name}?");
+                        Console.WriteLine(new string('-', 40) + "\n");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        try
+                        {
+                            string response = Console.ReadLine().ToLower();
+
+                            if (string.IsNullOrWhiteSpace(response))
+                            {
+                                throw new ArgumentException("Please do not give me a blank answer. That's rude.");
+                            }
+
+                            else
+                            {
+                                ResponseSystem(response);
+                            }
+                        }
+
+                        catch (ArgumentException e)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                            Console.WriteLine(new string('-', 100));
+                            Console.WriteLine(e.Message);
+                            Console.WriteLine(new string('-', 100) + "\n");
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            i--;
+                        }
+                    }
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine(new string('-', 100));
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(new string('-', 100) + "\n");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
+            }
+        }
+
+        public static void Welcome()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine("\r\n  _____     __                                _ __         ___                                         ___       __ \r\n / ___/_ __/ /  ___ _______ ___ ______ ______(_) /___ __  / _ |_    _____ ________ ___  ___ ___ ___   / _ )___  / /_\r\n/ /__/ // / _ \\/ -_) __(_-</ -_) __/ // / __/ / __/ // / / __ | |/|/ / _ `/ __/ -_) _ \\/ -_|_-<(_-<  / _  / _ \\/ __/\r\n\\___/\\_, /_.__/\\__/_/ /___/\\__/\\__/\\_,_/_/ /_/\\__/\\_, / /_/ |_|__,__/\\_,_/_/  \\__/_//_/\\__/___/___/ /____/\\___/\\__/ \r\n    /___/                                        /___/                                                              \r\n");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            SoundPlayer player = new SoundPlayer("Greetings.wav");
+            player.Play();
+            Console.WriteLine(@"
+                                         
+
+ (  (           (                         
+ )\))(   '   (  )\             )      (   
+((_)()\ )   ))\((_) (   (     (      ))\  
+_(())\_)() /((_)_   )\  )\    )\  ' /((_) 
+\ \((_)/ /(_)) | | ((_)((_) _((_)) (_))   
+ \ \/\/ / / -_)| |/ _|/ _ \| '  \()/ -_)  
+  \_/\_/  \___||_|\__|\___/|_|_|_| \___|  
+                                         
+
+");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(new string('-', 40));
+            Console.WriteLine("Press any key to continue");
+            Console.WriteLine(new string('-', 40) + "\n");
+            Console.ReadKey();
+            player.Stop();
+        }
+
+        public static void ResponseSystem(string response)
+        {
+            Dictionary<string, string> chatbot = new Dictionary<string, string>();
+            chatbot.Add("how are you", "I'm doing great today, thanks for asking!");
+            chatbot.Add("your purpose", "Í am here to help inform you on cybersecurity matters");
+            chatbot.Add("what can i ask", "I cover cybersecurity topics on; phishing, safe browsing, and password safety");
+            chatbot.Add("what do you do", "Í am here to help inform you on cybersecurity matters");
+            chatbot.Add("what can you do", "Í am here to help inform you on cybersecurity matters");
+            chatbot.Add("phishing", "Phishing Summary\r\nPhishing is a type of cyberattack that uses fake emails, text messages, phone calls, or websites to trick individuals into sharing sensitive data or downloading malware. These attacks often appear to come from a legitimate and reputable source, such as a bank, coworker, or workplace IT department, and can be highly effective due to their manipulation of human emotions like fear, anxiety, and compassion.\r\n\r\nPhishing attacks can take various forms, including:\r\n\r\nBulk Email Phishing: Scammers send spam emails to as many people as possible, often impersonating well-known brands to increase the chances of success.\r\nSpear Phishing: Targeted attacks on specific individuals, usually those with privileged access to sensitive data or special authority within an organization.\r\nWhaling: Highly targeted attacks aimed at high-level executives, such as CEOs or CFOs, to gain access to critical company data.\r\nSmishing: Phishing through text messages or SMS, often asking recipients to click on links or call back numbers.\r\nVishing: Voice phishing, where attackers use phone calls to gather sensitive information.\r\nAngler Phishing: Attacks using fake social media posts to trick victims into providing login information or downloading malware.\r\nPhishing remains a prevalent and dangerous threat, with an average of 31,000 phishing attacks sent out per day in 2023, according to a SlashNext report. It is also the most common data breach vector, accounting for 15% of all breaches.\r\n\r\nTo protect against phishing, individuals and organizations should:\r\n\r\nMonitor online accounts regularly and be aware of popup windows, text messages, and phone calls from unknown persons.\r\nBe wary of social engineering tactics and avoid clicking on suspicious links or downloading attachments from unknown sources.\r\nDeploy malicious URL detection and content filtering tools.\r\nStay informed about the latest phishing techniques and educate employees on how to identify and respond to phishing attempts.");
+            chatbot.Add("password safety", "Password Safety Summary\r\nPassword safety is crucial for protecting personal and business data from cyber threats. Strong passwords are essential as they provide a first line of defense against unauthorized access and cybercriminals. A strong password should be at least 16 characters long, include a mix of uppercase and lowercase letters, numbers, and special characters, and be unique for each account.\r\n It's important to avoid using easily guessable information such as birthdays, addresses, or common words.\r\n\r\nUsing a password manager can help manage multiple strong passwords and is recommended for maintaining security.\r\n Additionally, enabling multifactor authentication (MFA) adds an extra layer of security by requiring more than just a password for account access.\r\n\r\nIt's also important to change passwords immediately if there is any suspicion of unauthorized access or if a data breach involving the account is reported.\r\n However, it is no longer recommended to change passwords annually or biannually unless there is a specific reason to do so.\r\n\r\nFor survivors of abuse, using strong passwords may not be enough, and changing passwords can sometimes alert an abusive person.\r\n In such cases, it's advisable to use safer devices and accounts that the abusive person cannot access.\r\n Advocates can help provide guidance and resources for safety in these situations.\r\n\r\nIn summary, creating and maintaining strong, unique passwords, using a password manager, and enabling MFA are key practices for password safety.");
+            chatbot.Add("safe browsing", "Safe Browsing Summary\r\nSafe browsing involves accessing the internet securely to reduce risks from cyber threats like malware, phishing, and other malicious activities.\r\n It includes using secure browsers with built-in protections, keeping software updated, avoiding suspicious links and downloads, and managing cookies.\r\n\r\nGoogle Safe Browsing is a service that helps protect users by showing warnings for dangerous sites or files.\r\n It checks URLs against Google's lists of unsafe resources and notifies webmasters if their sites are compromised.\r\n Enhanced Protection mode, available in Chrome, uses advanced AI and machine learning to identify phishing and scam techniques, providing twice the protection against these threats compared to Standard Protection.\r\n\r\nSafe browsing also involves checking for secure website connections, using HTTPS, and being cautious with emails from unknown senders.\r\n Regularly clearing browsing history and cache, and using antivirus software, further enhances security.");
+
+            bool found = false;
+            foreach (string key in chatbot.Keys)
+            {
+                if (response.Contains(key))
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("\n" + new string('-', 210));
+                    Console.WriteLine(chatbot[key]);
+                    Console.WriteLine(new string('-', 210));
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    found = true;
+                }
+            }
+            if (!found)
+            {
+                if (response == "exit")
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("\n" + new string('-', 70));
+                    Console.WriteLine("Thank for using Cybersecurity Awareness Bot. See you next time!");
+                    Console.WriteLine(new string('-', 70));
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Environment.Exit(0);
+                }
+
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("\n" + new string('-', 70));
+                    Console.WriteLine("Sorry could you please repeat what you said, I didn't quite catch that.");
+                    Console.WriteLine(new string('-', 70));
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
+            }
+            /*
+              Developer Info:
+                 Mahira Kai Govender
+                 ST10438866
+                 kaioceania@gmail.com
+                 ST10438866@vcconnect.edu.za
+
+              References:
+                  - The Importance of Strong Passwords in Digital Safety (Minority Business Review)
+                  - What Is Phishing? A Brief Guide to Recognizing and Combating Phishing Attacks (CompTIA)
+                  - What is Safe Browsing?
+                    Why Safe Browsing is Critical to Protecting Yourself from Cyber Threats: Importance, Practices, and Antivirus Solutions (ReasonLabs)
+                  - StackOverFlow
+                */
+
+        }
+    }
+}
